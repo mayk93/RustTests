@@ -44,4 +44,14 @@ fn main() {
 
     println!("You guessed: {}", guess);
     println!("The secret number is: {}", secret_number);
+
+    // We are calling the cmp (compare) method of the guess variable. This returns the Ordering
+    // type we "imported" earlier.
+    // Ordering is an enum. We are saying here that, in case Ordering is Less ( we are matching
+    // that ), we execute println!("Too small!") and so on and so forth for the other 2 cases.
+    match guess.cmp(&secret_number) {
+        Ordering::Less    => println!("Too small!"),
+        Ordering::Greater => println!("Too big!"),
+        Ordering::Equal   => println!("You win!"),
+    }
 }
