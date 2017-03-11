@@ -14,44 +14,47 @@ use rand::Rng;
 fn main() {
     println!("Guess the number!\nPlease input your guess.");
 
-    // guess is more or less a variable (binding)
-    // While by default it would be immutable, we say mut, so it is mutable.
-    // String is a type we have access to from the stdlib.
-    // String has a "associated method" (static method) called "new". That is why we call with ::
-    // This is how we tell the compiler guess is a mutable, growable utf-9 encoded array
-    let mut guess = String::new();
-
     // secret_number is immutable. From the rand
     // We need to "import" Rng at first in order to use the associated method thread_rng and the
     // method gen_range.
     let secret_number = rand::thread_rng().gen_range(0, 101);
 
-    // io::stdin() from io we call the "associated method" (static methid) stdin to instantiate
-    // a instance of the standard input.
-    // The standard input has a method called read_line. This is why we call it with
-    // . as opposed to ::
-    io::stdin()
-        .read_line(&mut guess) // We are passing a reference to the mutable. We are putting guess
-                               // in and we expect it to be changed by the read_line method.
-        .expect("Failed to read line"); // read_line returns a Result type, which has a expect()
-                                        // method.
+    loop {
+        // guess is more or less a variable (binding)
+        // While by default it would be immutable, we say mut, so it is mutable.
+        // String is a type we have access to from the stdlib.
+        // String has a "associated method" (static method) called "new". That is why we call with ::
+        // This is how we tell the compiler guess is a mutable, growable utf-9 encoded array
+        let mut guess = String::new();
 
-    // Here, we convert the String type guess to a int type guess.
-    // This is called shadowing. We have already declared "guess" as a String, but we are creating
-    // a new one that has type i32. This is, to be able to compare it with the secret_number.
+        // io::stdin() from io we call the "associated method" (static methid) stdin to instantiate
+        // a instance of the standard input.
+        // The standard input has a method called read_line. This is why we call it with
+        // . as opposed to ::
+        io::stdin()
+            .read_line(&mut guess) // We are passing a reference to the mutable. We are putting guess
+                                   // in and we expect it to be changed by the read_line method.
+            .expect("Failed to read line"); // read_line returns a Result type, which has a expect()
+                                            // method.
 
-    let guess: i32 = guess.trim().parse().expect("Please type a number!");
+        // Here, we convert the String type guess to a int type guess.
+        // This is called shadowing. We have already declared "guess" as a String, but we are creating
+        // a new one that has type i32. This is, to be able to compare it with the secret_number.
 
-    println!("You guessed: {}", guess);
-    println!("The secret number is: {}", secret_number);
+        let guess: i32 = guess.trim().parse().expect("Please type a number!");
 
-    // We are calling the cmp (compare) method of the guess variable. This returns the Ordering
-    // type we "imported" earlier.
-    // Ordering is an enum. We are saying here that, in case Ordering is Less ( we are matching
-    // that ), we execute println!("Too small!") and so on and so forth for the other 2 cases.
-    match guess.cmp(&secret_number) {
-        Ordering::Less    => println!("Too small!"),
-        Ordering::Greater => println!("Too big!"),
-        Ordering::Equal   => println!("You win!"),
+        println!("You guessed: {}", guess);
+
+        // We are calling the cmp (compare) method of the guess variable. This returns the Ordering
+        // type we "imported" earlier.
+        // Ordering is an enum. We are saying here that, in case Ordering is Less ( we are matching
+        // that ), we execute println!("Too small!") and so on and so forth for the other 2 cases.
+        match guess.cmp(&secret_number) {
+            Ordering::Less    => println!("Too small!"),
+            Ordering::Greater => println!("Too big!"),
+            Ordering::Equal   => println!("You win!"),
+        }
     }
+
+    println!("The secret number was: {}", secret_number);
 }
