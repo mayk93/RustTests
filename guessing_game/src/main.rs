@@ -4,6 +4,9 @@ extern crate rand;
 // For convenience mostly. We use stdin from io. By doing this here, we don'y have to do this later:
 // str::io::stdin
 use std::io;
+// We "import" this type in order to use it in a comparison.
+use std::cmp::Ordering;
+
 // Rng is "imported" from the rand crate. While we don't use it directly, we need it to use another
 // method. See "traits". ( Sort of like an interface, not really )
 use rand::Rng;
@@ -32,6 +35,12 @@ fn main() {
                                // in and we expect it to be changed by the read_line method.
         .expect("Failed to read line"); // read_line returns a Result type, which has a expect()
                                         // method.
+
+    // Here, we convert the String type guess to a int type guess.
+    // This is called shadowing. We have already declared "guess" as a String, but we are creating
+    // a new one that has type i32. This is, to be able to compare it with the secret_number.
+
+    let guess: i32 = guess.trim().parse().expect("Please type a number!");
 
     println!("You guessed: {}", guess);
     println!("The secret number is: {}", secret_number);
