@@ -12,7 +12,7 @@ use std::cmp::Ordering;
 use rand::Rng;
 
 fn continue_loop(fails: &mut i32) {
-    if *fails > 10 {
+    if *fails > 5 {
        println!("You have failed {} times. Maybe you should quit?", fails);
     }
     *fails += 1
@@ -52,7 +52,13 @@ fn main() {
         // This is called shadowing. We have already declared "guess" as a String, but we are creating
         // a new one that has type i32. This is, to be able to compare it with the secret_number.
 
-        let guess: i32 = guess.trim().parse().expect("Please type a number!");
+        let guess: i32 = match guess.trim().parse() {
+            Ok(result) => { result },
+            Err(_)     => {
+                println!("An error has occurred. Most likely, you did not input a number.");
+                continue
+            }
+        };
 
         println!("You guessed: {}", guess);
 
