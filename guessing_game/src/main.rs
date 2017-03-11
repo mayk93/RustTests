@@ -11,6 +11,13 @@ use std::cmp::Ordering;
 // method. See "traits". ( Sort of like an interface, not really )
 use rand::Rng;
 
+fn continue_loop(fails: &mut i32) {
+    if *fails > 10 {
+       println!("You have failed {} times. Maybe you should quit?", fails);
+    }
+    *fails += 1
+}
+
 fn main() {
     println!("Guess the number!\nPlease input your guess.");
 
@@ -18,6 +25,10 @@ fn main() {
     // We need to "import" Rng at first in order to use the associated method thread_rng and the
     // method gen_range.
     let secret_number = rand::thread_rng().gen_range(0, 101);
+
+    // This number counts the number of failed guess attempts. After a number of iterations,
+    // we start prompting the user if he wants to give up.
+    let mut failed = 0;
 
     loop {
         // guess is more or less a variable (binding)
@@ -50,9 +61,18 @@ fn main() {
         // Ordering is an enum. We are saying here that, in case Ordering is Less ( we are matching
         // that ), we execute println!("Too small!") and so on and so forth for the other 2 cases.
         match guess.cmp(&secret_number) {
-            Ordering::Less    => println!("Too small!"),
-            Ordering::Greater => println!("Too big!"),
-            Ordering::Equal   => println!("You win!"),
+            Ordering::Less    => {
+                println!("Too small!");
+                continue_loop(&mut failed);
+            },
+            Ordering::Greater => {
+                println!("Too big!");
+                continue_loop(&mut failed);
+            },
+            Ordering::Equal   => {
+                println!("You win!");
+                break;
+            },
         }
     }
 
