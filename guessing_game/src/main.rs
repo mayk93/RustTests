@@ -82,5 +82,5 @@ fn main() {
         }
     }
 
-    println!("The secret number was: {}", secret_number);
+    println!("[] The secret number was: {}", secret_number);
 }
